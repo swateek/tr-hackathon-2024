@@ -1,3 +1,12 @@
 .*
 !.gitignore
 !.pre-commit-config.yaml
+**/__pycache__
+
+
+code/LingoBuddy/app/static/summary
+code/LingoBuddy/app/static/transcription
+code/LingoBuddy/app/static/translated_audio
+code/LingoBuddy/app/static/translation
+code/LingoBuddy/app/static/videos
+code/LingoBuddy/app/static/audio

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon-32x32.png') }}" type="image/png" />
+  <title>skill.io</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/translation.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <div class="header">
+    <a href="/" style="
+          position: absolute;
+          top: -2px;
+          left: 12px;
+          font-size: 40px;
+          font-weight: bold;
+          color: rgb(30, 133, 224);
+          text-decoration: none;
+        "><img src="{{ url_for('static', filename='images/favicon-32x32.png') }}" style="height: 60px;
+        width: 80px;
+        margin-left: -12px;" alt="Icon" /></a>
+    <p>
+      octopus.<span style="color: dodgerblue"><b>ai</b></span>
+    </p>
+  </div>
+  <div class="main-container">
+    <div class="sidebar">
+      <p class="heading">What you want to do?</p>
+      <div class="sidebar-option" onclick="showTab(this, 'tab-home')">
+        <i class="fa fa-home" style="font-size: 20px"></i>&nbsp;&nbsp;Home
+      </div>
+      <div class="sidebar-option" onclick="showTab(this, 'tab-translator')">
+        <i class="fa fa-film" style="font-size: 20px"></i>&nbsp;&nbsp;Video
+        Translation
+      </div>
+      <div class="sidebar-option" onclick="showTab(this, 'tab-multimodalChatBot')">
+        <i class="fa fa-comment" style="font-size: 20px"></i>&nbsp;&nbsp;MultiModal ChatBot
+      </div>
+    </div>
+    <div class="container">
+      <div id="tab-home" class="chat-container tab-content">
+        <div class="chat-title">
+          <img src="{{ url_for('static', filename='images/chatbot.gif') }}" />
+          <p>Ho<span>me</span></p>
+        </div>
+        <div style="display: flex;
+        margin-top: 10px">
+          <img src="{{ url_for('static', filename='images/image.png') }}" style="height:300px;" />
+          <p style="margin-left: 40px;font-size: larger;"><b>Welcome to <span style="color: orange">octopus.</span><span style="color: dodgerblue"><b>ai</b></span> - Your Productivity Powerhouse!</b><br><br>
+
+Transform the way you work with Octopus.ai, the ultimate productivity enhancer for developers. From seamlessly translating, summarizing, and transcribing meetings, to providing an intelligent AI-powered chatbot to tackle your queries, Octopus.ai is your one-stop solution to conquer tasks efficiently and focus on what matters most – building great software.
+
+Empower your workflow with the versatility of an octopus – smart, adaptable, and always one step ahead. Dive into the future of productivity with Octopus.ai!
+          </p>
+        </div>
+      </div>
+
+      <div id="tab-translator" class="chat-container tab-content">
+        <div class="chat-title">
+          <img src="{{ url_for('static', filename='images/chatbot.gif') }}" />
+          <p>Video<span>Translator</span></p>
+        </div>
+        <form id="upload-form" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <input type="file" id="file" name="file" accept=".mp4" required style="
+            display: inline-block;
+            border: none;
+            outline: none;
+            background: linear-gradient(to right, orange 0%, rgb(244, 166, 71) 100%);
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            box-shadow: 2px 2px 3px rgb(198, 198, 198);
+            transition: 0.3s ease all;
+            cursor: pointer;
+            text-align: center;
+            margin-left: 40%;
+            width: 200px;
+          " />
+            <label for="select-language-translation" style="
+            display: inline-block;
+            border: none;
+            outline: none;
+            color: black;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s ease all;
+            cursor: pointer;
+            text-align: center;
+            margin-left: 38%;
+            margin-top: 10px;">Select Language:</label>
+            <select id="select-language-translation" name="language" required style="height: 30px;">
+              <option value="hindi">Hindi</option>
+              <option value="tamil">Tamil</option>
+              <option value="telugu">Telugu</option>
+              <option value="assamese">Assamese</option>
+              <option value="bengali">Bengali</option>
+              <option value="gujarati">Gujarati</option>
+              <option value="kannada">Kannada</option>
+              <option value="malayalam">Malayalam</option>
+              <option value="marathi">Marathi</option>
+              <option value="nepali">Nepali</option>
+            </select>
+          </div>
+          <button class="btn" type="submit" style="margin-left:46%; margin-top: 15px;">Submit</button>
+        </form>
+
+        <div id="progress" style="display: none;">
+          <p>Processing</p>
+          <div class="progress" style="width: 0%; background-color: blue; height: 10px;"></div>
+        </div>
+
+        <div id="result" style="display: none; text-align: center;">
+          <hr>
+          <h3>Translated Video</h3>
+          <video id="translated-video" controls>
+            <!-- Hardcoded path to the video in the static folder -->
+            <source src={{ url_for('static', filename='videos/translated_video/translated_video.mp4' ) }}
+              type="video/mp4"> Your browser does not support the video tag.
+          </video>
+          <h3><a href="/static/transcription/transcription.txt" download style="text-decoration: none;">Transcribed Text
+              ⬇️</a></h3>
+          <p id="transcribed-text" style="text-align: justify;"></p>
+          <h3><a href="/static/translation/translation.txt" download style="text-decoration: none;">Translated Text
+              ⬇️</a></h3>
+          <p id="translated-text" style="text-align: justify;"></p>
+          <h3><a href="/static/summary/summary.txt" download style="text-decoration: none;">Summary ⬇️</a></h3>
+          <p id="summary" style="text-align: justify;"></p>
+        </div>
+      </div>
+
+      <div id="tab-multimodalChatBot" class="chat-container tab-content">
+        <div class="chat-title">
+          <img src="{{ url_for('static', filename='images/chatbot.gif') }}" />
+          <p>MultiModal<span>ChatBot</span></p>
+        </div>
+        <div><iframe src="http://localhost:8000/" width="100%" height="590" style="border:none;"></iframe></div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script>
+    function showTab ( element, tabId ) {
+      var sidebarOption = document.getElementsByClassName( "sidebar-option" );
+      for ( var i = 0; i < sidebarOption.length; i++ ) {
+        sidebarOption[i].classList.remove( "active-state" );
+      }
+      element.classList.add( "active-state" );
+
+      var tabs = document.getElementsByClassName( "tab-content" );
+      for ( var i = 0; i < tabs.length; i++ ) {
+        tabs[i].classList.remove( "active-tab" );
+      }
+      document.getElementById( tabId ).classList.add( "active-tab" );
+    }
+
+    showTab(
+      document.getElementsByClassName( "sidebar-option" )[0],
+      "tab-home"
+    );
+  </script>
+  <script>
+
+    document.getElementById( "upload-form" ).addEventListener( "submit", async function ( event ) {
+      event.preventDefault();
+
+      // Show progress bar and initialize progress
+      const progressBar = document.querySelector( ".progress" );
+      const progressContainer = document.getElementById( "progress" );
+      progressContainer.style.display = "block";
+      progressBar.style.width = "0%";
+
+      const formData = new FormData( this );
+      const language = document.getElementById( "select-language-translation" ).value;
+      formData.append( "language", language );
+
+      // Start progress animation
+      let progress = 0;
+      const interval = setInterval( () => {
+        if ( progress < 100 ) {
+          progress += 0.3;
+          progressBar.style.width = `${progress}%`;
+        }
+      }, 500 );
+
+      try {
+        const response = await fetch( "/upload", { method: "POST", body: formData } );
+        const data = await response.json();
+        console.log( data );
+
+        clearInterval( interval );
+        progressContainer.style.display = "none";
+        document.getElementById( 'result' ).style.display = 'block';
+        document.getElementById( "transcribed-text" ).textContent = data.transcribed_text;
+        document.getElementById( "translated-text" ).textContent = data.translated_text;
+        document.getElementById( "summary" ).textContent = data.summary;
+        const videoElement = $( "#translated-video" )[0];
+        videoElement.load();
+        videoElement.play();
+
+      } catch ( error ) {
+        // Handle any errors
+        alert( "An error occurred. Please try again." );
+        progressContainer.style.display = "none";
+        clearInterval( interval );
+      }
+    } );
+
+  </script>
+  <style>
+    .tab-content {
+      display: none;
+    }
+
+    .active-tab {
+      display: block;
+    }
+
+    .active-state {
+      background: linear-gradient(to right, dodgerblue 0%, deepskyblue 100%);
+      color: white;
+    }
+  </style>
+
+  <div class="footer">&copy; 2024 Team LangLords</div>
+</body>
+
+</html>

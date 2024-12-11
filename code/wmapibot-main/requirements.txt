@@ -1,0 +1,8 @@
+langchain
+chainlit
+chromadb
+tiktoken
+requests
+huggingface-hub
+sentence-transformers
+fireworks-ai
