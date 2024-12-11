@@ -2,7 +2,14 @@
 
 ### Getting Started
 
-1. For the examples
+1. Create a virtual environment
+```bash
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install --no-cache -r pip-requirements.txt
+```
+
+2. For the examples
 
 ```bash
     cd examples
